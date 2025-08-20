@@ -1,5 +1,22 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Nav from "./components/nav";
+import Home from "./pages/home";
+import Footer from "./components/footer";
+
 function App() {
-  return <div className="mx-auto text-red-600">heloo world</div>;
+  return (
+    <Router>
+      <div className="flex min-h-screen flex-col">
+        <Nav />
+        <div className="flex flex-1 flex-col">
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
+    </Router>
+  );
 }
 
 export default App;
