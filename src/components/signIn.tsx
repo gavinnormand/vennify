@@ -1,7 +1,7 @@
 function SignIn() {
   const handleRedirect = async () => {
     try {
-      fetch("/api/contact");
+      fetch("/api/redirectToAuth");
     } catch (error: unknown) {
       console.error("Error Redirecting:", error);
     }
