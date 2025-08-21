@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Nav from "./components/nav";
 import Home from "./pages/home";
 import Footer from "./components/footer";
+import Compare from "./pages/compare";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <div className="flex flex-1 flex-col">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/compare" element={<Compare />} />
           </Routes>
         </div>
         <Footer />

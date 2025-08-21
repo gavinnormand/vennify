@@ -1,14 +1,21 @@
-import { Link } from "react-router-dom";
-import SignIn from "./signIn";
+import { Link, useLocation } from "react-router-dom";
+import Auth from "./auth";
 
 function Nav() {
+  const param = new URLSearchParams(window.location.search);
+  const code = param.get("code");
+
+  const location = useLocation();
+
+  const loggedIn = code !== null || location.pathname === "/compare";
+  console.log("Logged in:", loggedIn);
   return (
     <nav className="bg-secondary sticky top-0 z-50">
       <div className="border-accent shadow-accent flex items-center justify-between border-b-2 px-4 py-4 shadow-md md:px-8">
         <Link to="/">
           <img src="/logo-green.svg" className="h-10"></img>
         </Link>
-        <SignIn />
+        <Auth loggedIn={loggedIn} />
       </div>
     </nav>
   );
