@@ -1,9 +1,15 @@
-import redirectToAuthCodeFlow from "../../api/redirectToAuth.js";
-
 function SignIn() {
+  const handleRedirect = async () => {
+    try {
+      fetch("/api/contact");
+    } catch (error: unknown) {
+      console.error("Error Redirecting:", error);
+    }
+  };
+
   return (
     <button
-      onClick={redirectToAuthCodeFlow}
+      onClick={handleRedirect}
       className="bg-accent rounded-full px-8 py-2 font-semibold text-black"
     >
       Sign In

@@ -1,6 +1,7 @@
 function Home() {
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
+  console.log(code);
 
   return (
     <div className="flex flex-col items-center justify-center px-8 py-12">
