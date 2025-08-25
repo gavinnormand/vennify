@@ -6,8 +6,8 @@ export default async function handler(req, res) {
   params.append("client_secret", process.env.SPOTIFY_CLIENT_SECRET);
   params.append("grant_type", "authorization_code");
   params.append("code", code);
-  params.append("redirect_uri", "https://vennify.vercel.app/");
-  //params.append("redirect_uri", "http://127.0.0.1:3000/");
+  //params.append("redirect_uri", "https://vennify.vercel.app/");
+  params.append("redirect_uri", "http://127.0.0.1:3000/");
 
   const result = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST",

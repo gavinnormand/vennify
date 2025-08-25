@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import SignIn from "../components/signIn";
 
 function Home() {
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
 
   const [token, setToken] = useState("");
+  const fetchedRef = useRef(false);
 
   useEffect(() => {
-    if (!code) return;
+    if (!code || fetchedRef.current) return;
+
+    fetchedRef.current = true;
 
     (async () => {
       const res = await fetch("/api/requestToken", {
@@ -30,7 +34,15 @@ function Home() {
         <span className="text-accent">Meet</span> … or{" "}
         <span className="text-slate-400">Split</span>
       </h1>
-      <p>Token: {token} :</p>
+      {token.length === 0 && (
+        <div className="flex flex-col items-center gap-6">
+          <h1 className="text-2xl font-semibold">
+            In order to continue, please sign in.
+          </h1>
+          <SignIn />
+        </div>
+      )}
+      {token.length > 0 && <button></button>}
     </div>
   );
 }
