@@ -1,7 +1,9 @@
 function SignIn() {
   const handleRedirect = async () => {
     try {
-      fetch("/api/redirectToAuth");
+      const response = await fetch("/api/redirectToAuth");
+      const { url } = await response.json();
+      document.location = url;
     } catch (error: unknown) {
       console.error("Error Redirecting:", error);
     }
@@ -10,7 +12,7 @@ function SignIn() {
   return (
     <button
       onClick={handleRedirect}
-      className="bg-accent rounded-full px-8 py-2 font-semibold text-black"
+      className="bg-accent cursor-pointer rounded-full px-8 py-2 font-semibold text-black"
     >
       Sign In
     </button>
