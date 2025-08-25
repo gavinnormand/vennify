@@ -1,4 +1,4 @@
-export default async function redirectToAuthCodeFlow() {
+export default function handler(req, res) {
   const params = new URLSearchParams();
   params.append("client_id", process.env.SPOTIFY_CLIENT_ID);
   params.append("response_type", "code");
@@ -10,6 +10,6 @@ export default async function redirectToAuthCodeFlow() {
   params.append("show_dialog", "false");
 
   const url = `https://accounts.spotify.com/authorize?${params.toString()}`;
-
-  return Response.json({ url });
+  
+  res.status(200).json({ url });
 }

@@ -1,7 +1,7 @@
 function SignIn() {
   const handleRedirect = async () => {
     try {
-      const response = await fetch("/api/redirectToAuth.js");
+      const response = await fetch("/api/redirectToAuth");
       const { url } = await response.json();
       document.location = url;
     } catch (error: unknown) {
