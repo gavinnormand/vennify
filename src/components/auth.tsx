@@ -8,7 +8,7 @@ interface AuthProps {
 const Auth: React.FC<AuthProps> = ({ loggedIn }) => {
   return (
     <div>
-      {!loggedIn && <SignIn />}
+      {!loggedIn && <SignIn large={false} />}
       {loggedIn && <Account />}
     </div>
   );

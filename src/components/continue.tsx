@@ -1,8 +1,4 @@
-interface SignInProps {
-  large: boolean;
-}
-
-const SignIn: React.FC<SignInProps> = ({ large }) => {
+function LargeSignIn() {
   const handleRedirect = async () => {
     try {
       const response = await fetch("/api/redirectToAuth");
@@ -16,14 +12,11 @@ const SignIn: React.FC<SignInProps> = ({ large }) => {
   return (
     <button
       onClick={handleRedirect}
-      className={`bg-accent cursor-pointer rounded-full font-semibold text-black` +
-        (large
-          ? " px-12 py-3 text-xl"
-          : " px-8 py-2")}
+      className="bg-accent cursor-pointer rounded-full px-12 py-3 text-xl font-semibold text-black"
     >
       Sign In
     </button>
   );
 }
 
-export default SignIn;
+export default LargeSignIn;
