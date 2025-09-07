@@ -1,5 +1,3 @@
-import React from "react";
-
 interface InfoCardProps {
   icon: React.ReactNode;
   title: string;

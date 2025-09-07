@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type SetStateAction } from "react";
 import { useLocation } from "react-router-dom";
+import Playlist from "../components/playlist";
+import SelectPlaylist from "../components/selectPlaylist";
 
 function Compare() {
   const location = useLocation();
@@ -9,10 +11,10 @@ function Compare() {
   >([]);
 
   const [playlist1, setPlaylist1] =
-    useState<SpotifyApi.PlaylistObjectSimplified>();
+    useState<SpotifyApi.PlaylistObjectSimplified | null>(null);
 
   const [playlist2, setPlaylist2] =
-    useState<SpotifyApi.PlaylistObjectSimplified>();
+    useState<SpotifyApi.PlaylistObjectSimplified | null>(null);
 
   useEffect(() => {
     if (playlists.length != 0) return;
@@ -32,11 +34,13 @@ function Compare() {
   return (
     <div>
       <p>Compare Page</p>
-      <ul>
+      <div className="flex flex-col">
         {playlists.map((playlist) => (
-          <li key={playlist.id}>{playlist.name}</li>
+          <Playlist key={playlist.id} playlist={playlist} />
         ))}
-      </ul>
+      </div>
+      <SelectPlaylist playlists={playlists} selectedPlaylist={playlist1} setSelectedPlaylist={setPlaylist1} />
+      <SelectPlaylist playlists={playlists} selectedPlaylist={playlist2} setSelectedPlaylist={setPlaylist2} />
     </div>
   );
 }
