@@ -34,13 +34,18 @@ function Compare() {
   return (
     <div>
       <p>Compare Page</p>
-      <div className="flex flex-col">
-        {playlists.map((playlist) => (
-          <Playlist key={playlist.id} playlist={playlist} />
-        ))}
+      <div className="flex flex-row flex-wrap justify-center gap-8">
+        <SelectPlaylist
+          playlists={playlists}
+          selectedPlaylist={playlist1}
+          setSelectedPlaylist={setPlaylist1}
+        />
+        <SelectPlaylist
+          playlists={playlists}
+          selectedPlaylist={playlist2}
+          setSelectedPlaylist={setPlaylist2}
+        />
       </div>
-      <SelectPlaylist playlists={playlists} selectedPlaylist={playlist1} setSelectedPlaylist={setPlaylist1} />
-      <SelectPlaylist playlists={playlists} selectedPlaylist={playlist2} setSelectedPlaylist={setPlaylist2} />
     </div>
   );
 }
