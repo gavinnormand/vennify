@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import Playlist from "../components/playlist";
+//import Playlist from "../components/playlist";
 import SelectPlaylist from "../components/selectPlaylist";
 
 function Compare() {
