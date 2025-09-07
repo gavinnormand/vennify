@@ -81,7 +81,7 @@ function Home() {
       )}
       {token && (
         <Link
-          className="bg-accent cursor-pointer rounded-full px-12 py-3 text-xl font-semibold text-black"
+          className="bg-accent cursor-pointer rounded-lg px-12 py-3 text-xl font-semibold text-black hover:bg-green-500"
           to="/compare"
           state={{ token: token }}
         >

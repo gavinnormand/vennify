@@ -13,7 +13,7 @@ function Nav() {
     <nav className="bg-secondary sticky top-0 z-50">
       <div className="border-accent shadow-accent flex items-center justify-between border-b-2 px-4 py-4 shadow-md md:px-8">
         <Link to="/" state={{ clearCache: true }}>
-          <img src="/vennify/logo-green.svg" className="h-10"></img>
+          <img src="/vennify/logo-green.png" className="h-10"></img>
         </Link>
         <Auth loggedIn={loggedIn} />
       </div>
