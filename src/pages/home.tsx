@@ -38,7 +38,7 @@ function Home() {
   }, [location.state]);
 
   return (
-    <div className="mx-8 flex flex-1 flex-col items-center justify-center gap-12 py-8 text-center lg:justify-around lg:gap-0 lg:p-0">
+    <div className="flex w-full flex-1 flex-col items-center justify-center gap-12 px-12 py-6 text-center">
       <h1 className="text-5xl leading-tight font-bold md:text-7xl">
         See Where Your Playlists
         <br />
@@ -81,7 +81,7 @@ function Home() {
       )}
       {token && (
         <Link
-          className="bg-accent cursor-pointer rounded-lg px-12 py-3 text-xl font-semibold text-black hover:bg-green-500"
+          className="bg-accent cursor-pointer rounded-lg px-12 py-3 text-xl font-semibold text-black transition-all hover:bg-green-500"
           to="/compare"
           state={{ token: token }}
         >

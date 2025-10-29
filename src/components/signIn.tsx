@@ -17,7 +17,7 @@ const SignIn: React.FC<SignInProps> = ({ large }) => {
     <button
       onClick={handleRedirect}
       className={
-        `bg-accent cursor-pointer rounded-lg font-semibold text-black hover:bg-green-500` +
+        `bg-accent transition-all cursor-pointer rounded-lg font-semibold text-black hover:bg-green-500` +
         (large ? " px-12 py-3 text-xl" : " px-8 py-2")
       }
     >

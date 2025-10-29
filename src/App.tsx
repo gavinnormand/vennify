@@ -9,7 +9,7 @@ function App() {
     <Router>
       <div className="flex min-h-screen flex-col">
         <Nav />
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 bg-primary flex-col">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/compare" element={<Compare />} />
