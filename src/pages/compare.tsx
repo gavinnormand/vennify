@@ -4,6 +4,8 @@ import SelectPlaylist from "../components/selectPlaylist";
 import Track from "../components/track";
 import Venn from "../components/venn";
 import PlaylistButton from "../components/playlistButton";
+import { customContains } from "../utils/comparator";
+import type { PlaylistAndTracks } from "../types";
 
 function Compare() {
   const location = useLocation();
@@ -27,8 +29,8 @@ function Compare() {
 
   const [confirmed, setConfirmed] = useState(false);
 
-  const [basePlaylist, setBasePlaylist] =
-    useState<SpotifyApi.PlaylistObjectSimplified | null>(null);
+  const [basePlaylistAndTracks, setBasePlaylistAndTracks] =
+    useState<PlaylistAndTracks | null>(null);
 
   const [left, setLeft] = useState(false);
   const [center, setCenter] = useState(false);
@@ -42,17 +44,14 @@ function Compare() {
     const result = [];
     if (!leftTracks || !rightTracks) return [];
 
-    const leftTrackIds = new Set(leftTracks.map((t) => t.track?.id));
-    const rightTrackIds = new Set(rightTracks.map((t) => t.track?.id));
-
     const leftNotRight = leftTracks.filter(
-      (t) => !rightTrackIds.has(t.track?.id),
+      (t) => !customContains(rightTracks, t.track!),
     );
     const rightNotLeft = rightTracks.filter(
-      (t) => !leftTrackIds.has(t.track?.id),
+      (t) => !customContains(leftTracks, t.track!),
     );
     const leftAndRight = leftTracks.filter((t) =>
-      rightTrackIds.has(t.track?.id),
+      customContains(rightTracks, t.track!),
     );
 
     if (left) {
@@ -155,20 +154,26 @@ function Compare() {
             <div className="flex flex-row justify-center gap-4">
               <div className="flex justify-end">
                 <PlaylistButton
-                  playlist={leftPlaylist!}
-                  base={basePlaylist}
-                  setBase={setBasePlaylist}
+                  playlistAndTracks={{
+                    playlist: leftPlaylist!,
+                    tracks: leftTracks!,
+                  }}
+                  base={basePlaylistAndTracks?.playlist || null}
+                  setBase={setBasePlaylistAndTracks}
                 />
               </div>
               <div className="flex justify-start">
                 <PlaylistButton
-                  playlist={rightPlaylist!}
-                  base={basePlaylist}
-                  setBase={setBasePlaylist}
+                  playlistAndTracks={{
+                    playlist: rightPlaylist!,
+                    tracks: rightTracks!,
+                  }}
+                  base={basePlaylistAndTracks?.playlist || null}
+                  setBase={setBasePlaylistAndTracks}
                 />
               </div>
             </div>
-            {!basePlaylist && (
+            {!basePlaylistAndTracks && (
               <p className="text-center">
                 Select which playlist to add songs too!
               </p>
@@ -183,8 +188,7 @@ function Compare() {
             (t) =>
               t.track && (
                 <div key={t.track.id} className="flex flex-col gap-2">
-                  <Track track={t.track} />
-                  <p>{t.track.id}</p>
+                  <Track track={t.track} base={basePlaylistAndTracks} />
                 </div>
               ),
           )}
