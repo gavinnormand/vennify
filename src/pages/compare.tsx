@@ -32,13 +32,18 @@ function Compare() {
   const [basePlaylistAndTracks, setBasePlaylistAndTracks] =
     useState<PlaylistAndTracks | null>(null);
 
-  const [left, setLeft] = useState(false);
-  const [center, setCenter] = useState(false);
-  const [right, setRight] = useState(false);
+  const [vennSelection, setVennSelection] = useState({
+    left: false,
+    center: false,
+    right: false,
+  });
 
-  const toggleLeft = () => setLeft((prev) => !prev);
-  const toggleCenter = () => setCenter((prev) => !prev);
-  const toggleRight = () => setRight((prev) => !prev);
+  const toggleVenn = (section: "left" | "center" | "right") => {
+    setVennSelection((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
 
   const computedTracks = () => {
     const result = [];
@@ -54,15 +59,15 @@ function Compare() {
       customContains(rightTracks, t.track!),
     );
 
-    if (left) {
+    if (vennSelection.left) {
       result.push(...leftNotRight);
     }
 
-    if (right) {
+    if (vennSelection.right) {
       result.push(...rightNotLeft);
     }
 
-    if (center) {
+    if (vennSelection.center) {
       result.push(...leftAndRight);
     }
 
@@ -109,6 +114,20 @@ function Compare() {
     })();
   }, [confirmed, leftPlaylist, rightPlaylist, token]);
 
+  const trackAddedHandler = (track: SpotifyApi.PlaylistTrackObject) => {
+    if (basePlaylistAndTracks?.playlist.id === leftPlaylist?.id) {
+      setLeftTracks((prev) => (prev ? [...prev, track] : [track]));
+      setBasePlaylistAndTracks((prev) =>
+        prev ? { ...prev, tracks: [...prev.tracks, track] } : null,
+      );
+    } else if (basePlaylistAndTracks?.playlist.id === rightPlaylist?.id) {
+      setRightTracks((prev) => (prev ? [...prev, track] : [track]));
+      setBasePlaylistAndTracks((prev) =>
+        prev ? { ...prev, tracks: [...prev.tracks, track] } : null,
+      );
+    }
+  };
+
   return (
     <div className="p-8">
       {!confirmed && (
@@ -143,12 +162,12 @@ function Compare() {
       {confirmed && (
         <div className="flex flex-col items-center gap-4">
           <Venn
-            left={left}
-            center={center}
-            right={right}
-            toggleLeft={toggleLeft}
-            toggleCenter={toggleCenter}
-            toggleRight={toggleRight}
+            left={vennSelection.left}
+            center={vennSelection.center}
+            right={vennSelection.right}
+            toggleLeft={() => toggleVenn("left")}
+            toggleCenter={() => toggleVenn("center")}
+            toggleRight={() => toggleVenn("right")}
           />
           <div className="flex flex-col gap-2">
             <div className="flex flex-row justify-center gap-4">
@@ -188,7 +207,12 @@ function Compare() {
             (t) =>
               t.track && (
                 <div key={t.track.id} className="flex flex-col gap-2">
-                  <Track track={t.track} base={basePlaylistAndTracks} />
+                  <Track
+                    track={t}
+                    base={basePlaylistAndTracks}
+                    token={token}
+                    onTrackAdded={trackAddedHandler}
+                  />
                 </div>
               ),
           )}
