@@ -23,7 +23,10 @@ const ChoosePlaylist: React.FC<SearchPlaylistProps> = ({
       {selectedPlaylist && (
         <div className="bg-secondary flex w-80 flex-row items-center justify-between gap-2 rounded-lg p-4 text-left md:w-96">
           <Playlist playlist={selectedPlaylist} />
-          <X className="shrink-0" onClick={() => setSelectedPlaylist(null)} />
+          <X
+            className="shrink-0 cursor-pointer"
+            onClick={() => setSelectedPlaylist(null)}
+          />
         </div>
       )}
       {!selectedPlaylist && (
