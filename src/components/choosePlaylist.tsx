@@ -10,6 +10,7 @@ interface SearchPlaylistProps {
     React.SetStateAction<SpotifyApi.PlaylistObjectSimplified | null>
   >;
   token: string;
+  index: number;
 }
 
 const ChoosePlaylist: React.FC<SearchPlaylistProps> = ({
@@ -17,9 +18,11 @@ const ChoosePlaylist: React.FC<SearchPlaylistProps> = ({
   selectedPlaylist,
   setSelectedPlaylist,
   token,
+  index,
 }) => {
   return (
-    <div>
+    <div className="flex flex-col items-center gap-2">
+      <p className="text-lg">Playlist {index}</p>
       {selectedPlaylist && (
         <div className="bg-secondary flex w-80 flex-row items-center justify-between gap-2 rounded-lg p-4 text-left md:w-96">
           <Playlist playlist={selectedPlaylist} />

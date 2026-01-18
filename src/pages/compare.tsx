@@ -171,12 +171,14 @@ function Compare() {
               selectedPlaylist={leftPlaylist}
               setSelectedPlaylist={setLeftPlaylist}
               token={token}
+              index={1}
             />
             <ChoosePlaylist
               playlists={playlists}
               selectedPlaylist={rightPlaylist}
               setSelectedPlaylist={setRightPlaylist}
               token={token}
+              index={2}
             />
           </div>
           <button
