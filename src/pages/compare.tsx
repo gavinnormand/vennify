@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import SelectPlaylist from "../components/selectPlaylist";
 import Track from "../components/track";
 import Venn from "../components/venn";
 import PlaylistButton from "../components/playlistButton";
-import { customContains } from "../utils/comparator";
+import { customContains, filterDuplicates } from "../utils/comparator";
 import type { PlaylistAndTracks } from "../types";
+import ChoosePlaylist from "../components/choosePlaylist";
 
 function Compare() {
   const location = useLocation();
@@ -28,6 +28,9 @@ function Compare() {
   >(null);
 
   const [confirmed, setConfirmed] = useState(false);
+
+  const [canEditLeft, setCanEditLeft] = useState(false);
+  const [canEditRight, setCanEditRight] = useState(false);
 
   const [basePlaylistAndTracks, setBasePlaylistAndTracks] =
     useState<PlaylistAndTracks | null>(null);
@@ -99,7 +102,7 @@ function Compare() {
       });
 
       const data = await res.json();
-      setLeftTracks(data.items);
+      setLeftTracks(filterDuplicates(data.items));
     })();
 
     (async () => {
@@ -110,7 +113,37 @@ function Compare() {
       });
 
       const data = await res.json();
-      setRightTracks(data.items);
+      setRightTracks(filterDuplicates(data.items));
+    })();
+
+    (async () => {
+      const res = await fetch("/api/addSongToPlaylist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token,
+          playlist_id: leftPlaylist.id,
+          uri: "",
+        }),
+      });
+
+      const data = await res.json();
+      setCanEditLeft(data.error.message !== "Forbidden");
+    })();
+
+    (async () => {
+      const res = await fetch("/api/addSongToPlaylist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token,
+          playlist_id: rightPlaylist.id,
+          uri: "",
+        }),
+      });
+
+      const data = await res.json();
+      setCanEditRight(data.error.message !== "Forbidden");
     })();
   }, [confirmed, leftPlaylist, rightPlaylist, token]);
 
@@ -133,15 +166,17 @@ function Compare() {
       {!confirmed && (
         <div className="flex flex-col items-center gap-8">
           <div className="flex flex-row flex-wrap justify-center gap-8">
-            <SelectPlaylist
+            <ChoosePlaylist
               playlists={playlists}
               selectedPlaylist={leftPlaylist}
               setSelectedPlaylist={setLeftPlaylist}
+              token={token}
             />
-            <SelectPlaylist
+            <ChoosePlaylist
               playlists={playlists}
               selectedPlaylist={rightPlaylist}
               setSelectedPlaylist={setRightPlaylist}
+              token={token}
             />
           </div>
           <button
@@ -179,6 +214,7 @@ function Compare() {
                   }}
                   base={basePlaylistAndTracks?.playlist || null}
                   setBase={setBasePlaylistAndTracks}
+                  canEdit={canEditLeft}
                 />
               </div>
               <div className="flex justify-start">
@@ -189,12 +225,14 @@ function Compare() {
                   }}
                   base={basePlaylistAndTracks?.playlist || null}
                   setBase={setBasePlaylistAndTracks}
+                  canEdit={canEditRight}
                 />
               </div>
             </div>
             {!basePlaylistAndTracks && (
               <p className="text-center">
-                Select which playlist to add songs too!
+                {(canEditLeft || canEditRight) &&
+                  "Select which playlist to add songs too!"}
               </p>
             )}
           </div>

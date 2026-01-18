@@ -24,26 +24,26 @@ const SelectPlaylist: React.FC<SelectPlaylistProps> = ({
           "bg-secondary w-full rounded-lg p-4" +
           (selectOpen ? " rounded-b-none" : "")
         }
-        onClick={() => setSelectOpen(!selectOpen)}
+        onClick={
+          !selectedPlaylist ? () => setSelectOpen(!selectOpen) : undefined
+        }
       >
         <div className="flex cursor-pointer flex-row items-center justify-between gap-2 text-left">
           <div className="min-w-0 flex-1">
-            {selectedPlaylist ? (
-              <Playlist playlist={selectedPlaylist} />
-            ) : (
-              "Please Select a Playlist"
-            )}
+            {!selectedPlaylist && "Please Select a Playlist"}
           </div>
-          <ChevronLeft
-            className={
-              `shrink-0 transition-all ` +
-              (selectOpen ? "-rotate-90" : "rotate-0")
-            }
-          />
+          {!selectedPlaylist && (
+            <ChevronLeft
+              className={
+                `shrink-0 transition-all ` +
+                (selectOpen ? "-rotate-90" : "rotate-0")
+              }
+            />
+          )}
         </div>
       </button>
       {selectOpen && (
-        <div className="bg-secondary w-full max-h-80 overflow-y-auto rounded-b-lg">
+        <div className="bg-secondary max-h-80 w-full overflow-y-auto rounded-b-lg">
           {playlists.map((playlist) => (
             <div
               key={playlist.id}

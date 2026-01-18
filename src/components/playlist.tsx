@@ -9,8 +9,10 @@ const Playlist: React.FC<PlaylistProps> = ({ playlist }) => {
   return (
     <div className="flex flex-row items-center gap-2">
       <img className="h-14 w-14" src={cover}></img>
-      <div className="flex flex-col justify-center flex-1 min-w-0">
-        <h3 className="text-left text-lg font-semibold truncate">{playlist.name}</h3>
+      <div className="flex min-w-0 flex-1 flex-col justify-center">
+        <h3 className="truncate text-left text-lg font-semibold">
+          {playlist.name}
+        </h3>
         <div className="flex flex-row items-center gap-1">
           <p className="text-sm">{playlist.owner.display_name}</p>
           <p>•</p>

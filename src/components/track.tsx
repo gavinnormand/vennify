@@ -28,7 +28,7 @@ const Track: React.FC<TrackProps> = ({ track, base, token, onTrackAdded }) => {
 
     const data = await res.json();
 
-    if (res.ok) {
+    if (data.error === undefined) {
       alert(`Added "${t.name}" to "${base!.playlist.name}"!`);
       onTrackAdded(track);
     } else {

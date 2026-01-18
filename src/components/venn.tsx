@@ -18,7 +18,12 @@ const Venn: React.FC<VennProps> = ({
   return (
     <div className="flex flex-row items-center">
       <div className="relative">
-        <svg width="264" height="164" viewBox="68 18 264 164" className="mx-auto">
+        <svg
+          width="264"
+          height="164"
+          viewBox="68 18 264 164"
+          className="mx-auto"
+        >
           {/* Left circle only area */}
           <circle
             cx="150"

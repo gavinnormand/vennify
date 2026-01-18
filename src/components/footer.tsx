@@ -6,7 +6,7 @@ function Footer() {
         <p>
           <a
             href="https://www.gavinnormand.com/"
-            className="flex items-center gap-2 hover:text-accent active:text-accent"
+            className="hover:text-accent active:text-accent flex items-center gap-2"
             target="_blank"
             rel="noopener noreferrer"
           >

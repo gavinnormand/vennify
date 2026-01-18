@@ -38,7 +38,7 @@ function Home() {
   }, [location.state]);
 
   return (
-    <div className="flex w-full flex-1 flex-col items-center justify-center gap-12 px-12 py-6 text-center">
+    <div className="mx-auto flex max-w-6xl flex-1 flex-col items-center justify-center gap-12 px-12 py-6 text-center">
       <h1 className="text-5xl leading-tight font-bold md:text-7xl">
         See Where Your Playlists
         <br />

@@ -20,3 +20,18 @@ export function customContains(
   }
   return false;
 }
+
+export function filterDuplicates(
+  tracks: SpotifyApi.PlaylistTrackObject[],
+): SpotifyApi.PlaylistTrackObject[] {
+  const uniqueTracks: SpotifyApi.PlaylistTrackObject[] = [];
+  for (const track of tracks) {
+    if (!customContains(uniqueTracks, track.track!)) {
+      uniqueTracks.push(track);
+    }
+    else {
+      console.log(`Duplicate found: ${track.track?.name} by ${track.track?.artists.map(a => a.name).join(", ")}`);
+    }
+  }
+  return uniqueTracks;
+}
