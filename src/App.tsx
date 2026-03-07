@@ -21,6 +21,8 @@ function App() {
     console.log("Token", token);
   };
 
+  console.log("token", token);
+
   return (
     <Router>
       <div className="flex min-h-screen flex-col">
@@ -37,15 +39,13 @@ function App() {
                 <Home
                   token={token}
                   setToken={setToken}
+                  loginType={loginType}
                   setLoginType={setLoginType}
                   handleGuestLogin={handleGuestLogin}
                 />
               }
             />
-            <Route
-              path="/compare"
-              element={<Compare loginType={loginType} />}
-            />
+            <Route path="/compare" element={<Compare token={token} loginType={loginType} />} />
           </Routes>
         </div>
         <Footer />

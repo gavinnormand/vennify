@@ -5,6 +5,7 @@ import SignIn from "../components/signIn";
 import type { AuthTypes } from "../types";
 
 interface HomeProps {
+  loginType: AuthTypes;
   setLoginType: React.Dispatch<React.SetStateAction<AuthTypes>>;
   token: string | null;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
@@ -12,6 +13,7 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({
+  loginType,
   setLoginType,
   token,
   setToken,
@@ -44,7 +46,7 @@ const Home: React.FC<HomeProps> = ({
 
   return (
     <div className="mx-auto flex max-w-6xl flex-1 flex-col items-center justify-center gap-12 px-12 py-6 text-center">
-      <h1 className="text-5xl leading-tight font-bold md:text-7xl">
+      <h1 className="text-5xl leading-tight font-bold md:text-6xl">
         See Where Your Playlists
         <br />
         <span className="text-accent">Meet</span> … or{" "}
@@ -80,7 +82,7 @@ const Home: React.FC<HomeProps> = ({
         <Link
           className="bg-accent cursor-pointer rounded-lg px-12 py-3 text-xl font-semibold text-black transition-all hover:bg-green-500"
           to="/compare"
-          state={{ token: token }}
+          state={{ loginType: loginType, token: token }}
         >
           Continue
         </Link>
@@ -92,6 +94,19 @@ const Home: React.FC<HomeProps> = ({
           <SignIn handleGuestLogin={handleGuestLogin} />
         </div>
       )}
+      <p className="text-center text-sm text-slate-400">
+        ⚠️ Due to{" "}
+        <a
+          href="https://developer.spotify.com/blog/2026-02-06-update-on-developer-access-and-platform-security"
+          target="_blank"
+          rel="noreferrer"
+          className="underline hover:text-slate-200"
+        >
+          Spotify's February 2026 API changes
+        </a>
+        , sign-in may not be available. Guest Access can be used to browse and
+        compare only public playlists.
+      </p>
     </div>
   );
 };

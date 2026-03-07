@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Track from "../components/track";
 import Venn from "../components/venn";
 import PlaylistButton from "../components/playlistButton";
@@ -9,12 +9,17 @@ import ChoosePlaylist from "../components/choosePlaylist";
 
 interface CompareProps {
   loginType: AuthTypes;
+  token: string | null;
 }
 
-const Compare: React.FC<CompareProps> = ({ loginType }) => {
-  const location = useLocation();
+const Compare: React.FC<CompareProps> = ({ loginType, token }) => {
+  const navigate = useNavigate();
   const isGuest = loginType == "GUEST";
-  const token = location.state.token;
+
+  useEffect(() => {
+    if (!token) navigate("/", { replace: true });
+  }, [token, navigate]);
+
   const [playlists, setPlaylists] = useState<
     SpotifyApi.PlaylistObjectSimplified[]
   >([]);
@@ -173,6 +178,8 @@ const Compare: React.FC<CompareProps> = ({ loginType }) => {
       );
     }
   };
+
+  if (!token) return null;
 
   return (
     <div className="p-8">

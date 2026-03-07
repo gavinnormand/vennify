@@ -2,7 +2,7 @@ function Footer() {
   return (
     <footer>
       <div className="bg-secondary flex items-center justify-between px-12 py-4">
-        <p>© 2025 Gavin Normand</p>
+        <p>© {new Date().getFullYear()} Gavin Normand</p>
         <p>
           <a
             href="https://www.gavinnormand.com/"
