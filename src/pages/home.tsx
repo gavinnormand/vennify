@@ -1,15 +1,26 @@
-import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import InfoCard from "../components/infoCard";
 import SignIn from "../components/signIn";
+import type { AuthTypes } from "../types";
 
-function Home() {
-  const params = new URLSearchParams(window.location.search);
-  const location = useLocation();
+interface HomeProps {
+  setLoginType: React.Dispatch<React.SetStateAction<AuthTypes>>;
+  token: string | null;
+  setToken: React.Dispatch<React.SetStateAction<string | null>>;
+  handleGuestLogin: (token: string) => void;
+}
 
-  const [code, setCode] = useState<string | null>(params.get("code"));
+const Home: React.FC<HomeProps> = ({
+  setLoginType,
+  token,
+  setToken,
+  handleGuestLogin,
+}) => {
+  const [searchParams] = useSearchParams();
+  const code = searchParams.get("code");
+  const navigate = useNavigate();
 
-  const [token, setToken] = useState<string | null>(null);
   const fetchedRef = useRef(false);
 
   useEffect(() => {
@@ -25,17 +36,11 @@ function Home() {
       });
 
       const { access_token } = await res.json();
-      console.log("Access Token:", access_token);
       setToken(access_token);
+      setLoginType("USER");
+      navigate("/", { replace: true });
     })();
-  }, [code]);
-
-  useEffect(() => {
-    if (location.state?.clearCache) {
-      setToken(null);
-      setCode(null);
-    }
-  }, [location.state]);
+  }, [code, navigate, setLoginType, setToken]);
 
   return (
     <div className="mx-auto flex max-w-6xl flex-1 flex-col items-center justify-center gap-12 px-12 py-6 text-center">
@@ -71,15 +76,7 @@ function Home() {
           }
         />
       </div>
-      {!token && (
-        <div className="flex flex-col items-center gap-4">
-          <h1 className="text-2xl font-semibold">
-            In order to continue, please sign in.
-          </h1>
-          <SignIn />
-        </div>
-      )}
-      {token && (
+      {token ? (
         <Link
           className="bg-accent cursor-pointer rounded-lg px-12 py-3 text-xl font-semibold text-black transition-all hover:bg-green-500"
           to="/compare"
@@ -87,9 +84,16 @@ function Home() {
         >
           Continue
         </Link>
+      ) : (
+        <div className="flex flex-col items-center gap-4">
+          <h1 className="text-2xl font-semibold">
+            In order to continue, please sign in.
+          </h1>
+          <SignIn handleGuestLogin={handleGuestLogin} />
+        </div>
       )}
     </div>
   );
-}
+};
 
 export default Home;

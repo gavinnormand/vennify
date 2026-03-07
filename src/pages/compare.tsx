@@ -4,11 +4,16 @@ import Track from "../components/track";
 import Venn from "../components/venn";
 import PlaylistButton from "../components/playlistButton";
 import { customContains, filterDuplicates } from "../utils/comparator";
-import type { PlaylistAndTracks } from "../types";
+import type { AuthTypes, PlaylistAndTracks } from "../types";
 import ChoosePlaylist from "../components/choosePlaylist";
 
-function Compare() {
+interface CompareProps {
+  loginType: AuthTypes;
+}
+
+const Compare: React.FC<CompareProps> = ({ loginType }) => {
   const location = useLocation();
+  const isGuest = loginType == "GUEST";
   const token = location.state.token;
   const [playlists, setPlaylists] = useState<
     SpotifyApi.PlaylistObjectSimplified[]
@@ -78,7 +83,7 @@ function Compare() {
   };
 
   useEffect(() => {
-    if (playlists.length != 0) return;
+    if (isGuest || playlists.length != 0) return;
     (async () => {
       const res = await fetch("/api/getPlaylists", {
         method: "POST",
@@ -87,10 +92,12 @@ function Compare() {
       });
 
       const data = await res.json();
+      console.log("Login Type", loginType);
+      console.log("isGuest", isGuest);
       console.log("Playlists", data.items);
       setPlaylists(data.items);
     })();
-  }, [playlists.length, token]);
+  }, [isGuest, loginType, playlists.length, token]);
 
   useEffect(() => {
     if (!confirmed || !leftPlaylist || !rightPlaylist) return;
@@ -115,6 +122,8 @@ function Compare() {
       const data = await res.json();
       setRightTracks(filterDuplicates(data.items));
     })();
+
+    if (isGuest) return;
 
     (async () => {
       const res = await fetch("/api/addSongToPlaylist", {
@@ -145,9 +154,13 @@ function Compare() {
       const data = await res.json();
       setCanEditRight(data.error.message !== "Forbidden");
     })();
-  }, [confirmed, leftPlaylist, rightPlaylist, token]);
+  }, [confirmed, isGuest, leftPlaylist, rightPlaylist, token]);
 
   const trackAddedHandler = (track: SpotifyApi.PlaylistTrackObject) => {
+    if (isGuest) {
+      alert("Guests cannot add tracks!");
+      return;
+    }
     if (basePlaylistAndTracks?.playlist.id === leftPlaylist?.id) {
       setLeftTracks((prev) => (prev ? [...prev, track] : [track]));
       setBasePlaylistAndTracks((prev) =>
@@ -172,6 +185,7 @@ function Compare() {
               setSelectedPlaylist={setLeftPlaylist}
               token={token}
               index={1}
+              isGuest={isGuest}
             />
             <ChoosePlaylist
               playlists={playlists}
@@ -179,6 +193,7 @@ function Compare() {
               setSelectedPlaylist={setRightPlaylist}
               token={token}
               index={2}
+              isGuest={isGuest}
             />
           </div>
           <button
@@ -260,6 +275,6 @@ function Compare() {
       )}
     </div>
   );
-}
+};
 
 export default Compare;

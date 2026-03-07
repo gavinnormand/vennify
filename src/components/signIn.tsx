@@ -1,4 +1,8 @@
-const SignIn: React.FC = () => {
+interface SignInProps {
+  handleGuestLogin: (token: string) => void;
+}
+
+const SignIn: React.FC<SignInProps> = ({ handleGuestLogin }) => {
   const handleRedirect = async () => {
     try {
       const response = await fetch("/api/redirectToAuth");
@@ -9,13 +13,29 @@ const SignIn: React.FC = () => {
     }
   };
 
+  const handleGuest = async () => {
+    const response = await fetch("/api/requestGuestToken");
+    const { access_token } = await response.json();
+    console.log("access_token", access_token);
+    handleGuestLogin(access_token);
+  };
+
   return (
-    <button
-      onClick={handleRedirect}
-      className={`bg-accent cursor-pointer rounded-lg px-8 py-2 font-semibold text-black transition-all hover:bg-green-500`}
-    >
-      Sign In
-    </button>
+    <div className="flex flex-row items-center gap-2">
+      <button
+        onClick={handleRedirect}
+        className={`bg-accent cursor-pointer rounded-lg px-8 py-2 font-semibold text-black transition-all hover:bg-green-500`}
+      >
+        Sign In
+      </button>
+      <p>or</p>
+      <button
+        onClick={handleGuest}
+        className={`bg-accent cursor-pointer rounded-lg px-4 py-2 font-semibold text-black transition-all hover:bg-green-500`}
+      >
+        Guest Access
+      </button>
+    </div>
   );
 };
 

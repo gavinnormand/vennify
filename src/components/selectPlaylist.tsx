@@ -61,6 +61,9 @@ const SelectPlaylist: React.FC<SelectPlaylistProps> = ({
               <Playlist playlist={playlist} />
             </div>
           ))}
+          {playlists.length == 0 && (
+            <p className="p-2 text-center">{"No Playlists Found :("}</p>
+          )}
         </div>
       )}
     </div>

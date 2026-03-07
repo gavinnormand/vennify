@@ -1,15 +1,21 @@
-import Account from "./account";
 import SignIn from "./signIn";
+import SignOut from "./signOut";
 
 interface AuthProps {
   loggedIn: boolean;
+  handleLogout: () => void;
+  handleGuestLogin: (token: string) => void;
 }
 
-const Auth: React.FC<AuthProps> = ({ loggedIn }) => {
+const Auth: React.FC<AuthProps> = ({
+  loggedIn,
+  handleLogout,
+  handleGuestLogin,
+}) => {
   return (
     <div>
-      {!loggedIn && <SignIn />}
-      {loggedIn && <Account />}
+      {!loggedIn && <SignIn handleGuestLogin={handleGuestLogin} />}
+      {loggedIn && <SignOut handleLogOut={handleLogout} />}
     </div>
   );
 };

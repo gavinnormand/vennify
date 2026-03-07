@@ -11,6 +11,7 @@ interface SearchPlaylistProps {
   >;
   token: string;
   index: number;
+  isGuest: boolean;
 }
 
 const ChoosePlaylist: React.FC<SearchPlaylistProps> = ({
@@ -19,6 +20,7 @@ const ChoosePlaylist: React.FC<SearchPlaylistProps> = ({
   setSelectedPlaylist,
   token,
   index,
+  isGuest,
 }) => {
   return (
     <div className="flex flex-col items-center gap-2">
@@ -34,12 +36,16 @@ const ChoosePlaylist: React.FC<SearchPlaylistProps> = ({
       )}
       {!selectedPlaylist && (
         <div className="flex flex-col items-center gap-3">
-          <SelectPlaylist
-            playlists={playlists}
-            selectedPlaylist={selectedPlaylist}
-            setSelectedPlaylist={setSelectedPlaylist}
-          />
-          <p>or</p>
+          {!isGuest && (
+            <>
+              <SelectPlaylist
+                playlists={playlists}
+                selectedPlaylist={selectedPlaylist}
+                setSelectedPlaylist={setSelectedPlaylist}
+              />
+              <p>or</p>
+            </>
+          )}
           <SearchPlaylist
             token={token}
             setSelectedPlaylist={setSelectedPlaylist}
