@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import InfoCard from "../components/infoCard";
-import AddEmailModal from "../components/addEmailModal";
+import SignIn from "../components/signIn";
 
 function Home() {
   const params = new URLSearchParams(window.location.search);
@@ -76,7 +76,7 @@ function Home() {
           <h1 className="text-2xl font-semibold">
             In order to continue, please sign in.
           </h1>
-          <AddEmailModal large={true} />
+          <SignIn />
         </div>
       )}
       {token && (

@@ -1,5 +1,5 @@
 import Account from "./account";
-import AddEmailModal from "./addEmailModal";
+import SignIn from "./signIn";
 
 interface AuthProps {
   loggedIn: boolean;
@@ -8,7 +8,7 @@ interface AuthProps {
 const Auth: React.FC<AuthProps> = ({ loggedIn }) => {
   return (
     <div>
-      {!loggedIn && <AddEmailModal large={false} />}
+      {!loggedIn && <SignIn />}
       {loggedIn && <Account />}
     </div>
   );
