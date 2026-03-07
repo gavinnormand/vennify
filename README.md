@@ -1,69 +1,28 @@
-# React + TypeScript + Vite
+# Vennify
+_Compare Spotify playlists and discover where they meet — or split._
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## What is Vennify?
 
-Currently, two official plugins are available:
+Vennify is a web app that lets you visually compare two Spotify playlists using a Venn diagram interface. Select any two playlists, see which tracks they share, and which are unique to each, then curate songs across playlists in a single click.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Playlist Comparison** — Compare any two public or private Spotify playlists side by side
+- **Venn Diagram UI** — Interactively toggle the left, center, and right sections to filter tracks by overlap or difference
+- **Track Curation** — Add songs from one playlist to another directly from the comparison view
+- **Spotify OAuth** — Sign in with your Spotify account to access your private playlists and edit them
+- **Guest Mode** — No account needed to compare public playlists, powered by Spotify's Client Credentials flow
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+> ⚠️ Due to [Spotify's February 2026 API changes](https://developer.spotify.com/documentation/web-api/tutorials/february-2026-migration-guide), sign-in may not be available. Guest Mode can be used to browse and compare public playlists.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Tech Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **Frontend** — React, TypeScript, Tailwind CSS, React Router
+- **Backend** — Next.js, Vercel Serverless Functions
+- **Auth** — Spotify OAuth 2.0 (Authorization Code flow) + Client Credentials for guests
+- **Deployment** — Vercel
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### A Note on the Spotify API
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+It is really devastating how Spotify is gutting their public API. Restricting Development Mode apps to 5 users effectively kills any small passion project or open source tool built on their platform. This is the kind of community-driven work that made Spotify's ecosystem so rich in the first place.
